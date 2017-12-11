@@ -90,6 +90,7 @@ private:
     QLabel *screenshotLabel;
     QPoint m_mousePressPos;
     bool mouseMoveSinceClick;
+    bool mouseClicked;
 };
 
 #endif // SCREENSHOT_H

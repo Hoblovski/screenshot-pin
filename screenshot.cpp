@@ -58,7 +58,8 @@
 
 Screenshot::Screenshot() :
     originalPixmap(1, 1),
-    screenshotLabel(new QLabel(this))
+    screenshotLabel(new QLabel(this)),
+    mouseClicked(false)
 {
     screenshotLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     screenshotLabel->setAlignment(Qt::AlignCenter);
@@ -87,10 +88,12 @@ void Screenshot::resizeEvent(QResizeEvent * /* event */)
 
 void Screenshot::mousePressEvent(QMouseEvent *event)
 {
+//    qDebug() << "mousePressEvent\n";
     switch (event->button()) {
         case Qt::LeftButton:{
             m_mousePressPos = QPoint(event->x(), event->y());
             mouseMoveSinceClick = false;
+            mouseClicked = true;
             break;}
         case Qt::RightButton:
             close();
@@ -102,11 +105,13 @@ void Screenshot::mousePressEvent(QMouseEvent *event)
 
 void Screenshot::mouseReleaseEvent(QMouseEvent *event)
 {
+//    qDebug() << "mouseReleaseEvent\n";
     switch (event->button()) {
         case Qt::LeftButton:{
             QPoint pos = QPoint(event->x(), event->y());
             if (!mouseMoveSinceClick)
                 newScreenShot();
+            mouseClicked = false;
             break;}
         default:
             break;
@@ -115,6 +120,8 @@ void Screenshot::mouseReleaseEvent(QMouseEvent *event)
 
 void Screenshot::mouseMoveEvent(QMouseEvent *event)
 {
+//    qDebug() << "mouseMoveEvent\n";
+    if (!mouseClicked) return;
     QPoint deltaPos = event->globalPos() - m_mousePressPos;
     mouseMoveSinceClick = true;
     move(deltaPos);
