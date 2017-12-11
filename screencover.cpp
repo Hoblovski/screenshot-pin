@@ -32,9 +32,19 @@ ScreenCover::~ScreenCover()
 
 void ScreenCover::mousePressEvent(QMouseEvent *event)
 {
-    origin = event->pos();
-    m_rubberBand->setGeometry(QRect(origin, QSize()));
-    m_rubberBand->show();
+    switch (event->button()) {
+        case Qt::LeftButton:{
+            origin = event->pos();
+            m_rubberBand->setGeometry(QRect(origin, QSize()));
+            m_rubberBand->show();
+            break;}
+        case Qt::RightButton:{
+            close();
+            emit selectionCanceled();
+            break;}
+        default:
+            break;
+    }
 }
 
 void ScreenCover::mouseMoveEvent(QMouseEvent *event)
@@ -42,8 +52,9 @@ void ScreenCover::mouseMoveEvent(QMouseEvent *event)
     m_rubberBand->setGeometry(QRect(origin, event->pos()).normalized());
 }
 
-void ScreenCover::mouseReleaseEvent(QMouseEvent */*event*/)
+void ScreenCover::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (event->button() == Qt::RightButton) return;
     m_rubberBand->hide();
     QRect geom = m_rubberBand->geometry();
     close();

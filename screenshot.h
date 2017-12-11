@@ -75,16 +75,21 @@ public:
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
     void newScreenShot();
     void onSelectionComplete(int x, int y, int w, int h);
+    void onSelectionCalceled();
 
 private:
     void updateScreenshotLabel();
 
     QPixmap originalPixmap;
     QLabel *screenshotLabel;
+    QPoint m_mousePressPos;
+    bool mouseMoveSinceClick;
 };
 
 #endif // SCREENSHOT_H

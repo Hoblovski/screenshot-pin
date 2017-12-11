@@ -65,13 +65,15 @@ Screenshot::Screenshot() :
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-    const QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
     mainLayout->addWidget(screenshotLabel);
+
+    QSizeGrip *szGrip = new QSizeGrip(this);
 
     setWindowTitle(tr("Screenshot"));
     setMinimumSize(100, 100);
     SetForegroundWindow((HWND)winId());
-    setWindowFlags(Qt::WindowStaysOnTopHint);
+    setWindowFlags(Qt::WindowStaysOnTopHint
+                   | Qt::FramelessWindowHint);
 }
 
 
@@ -86,9 +88,10 @@ void Screenshot::resizeEvent(QResizeEvent * /* event */)
 void Screenshot::mousePressEvent(QMouseEvent *event)
 {
     switch (event->button()) {
-        case Qt::LeftButton:
-            newScreenShot();
-            break;
+        case Qt::LeftButton:{
+            m_mousePressPos = QPoint(event->x(), event->y());
+            mouseMoveSinceClick = false;
+            break;}
         case Qt::RightButton:
             close();
             break;
@@ -97,17 +100,37 @@ void Screenshot::mousePressEvent(QMouseEvent *event)
     }
 }
 
+void Screenshot::mouseReleaseEvent(QMouseEvent *event)
+{
+    switch (event->button()) {
+        case Qt::LeftButton:{
+            QPoint pos = QPoint(event->x(), event->y());
+            if (!mouseMoveSinceClick)
+                newScreenShot();
+            break;}
+        default:
+            break;
+    }
+}
+
+void Screenshot::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint deltaPos = event->globalPos() - m_mousePressPos;
+    mouseMoveSinceClick = true;
+    move(deltaPos);
+}
+
 void Screenshot::newScreenShot()
 {
     ScreenCover* scov = new ScreenCover();
     scov->showFullScreen();
     connect(scov, &ScreenCover::selectionComplete, this, &Screenshot::onSelectionComplete);
+    connect(scov, &ScreenCover::selectionCanceled, this, &Screenshot::onSelectionCalceled);
     hide();
 }
 
 void Screenshot::onSelectionComplete(int x, int y, int w, int h)
 {
-    setMinimumSize(10, 10);
     QScreen *screen = QGuiApplication::primaryScreen();
     if (const QWindow *window = windowHandle())
         screen = window->screen();
@@ -120,6 +143,16 @@ void Screenshot::onSelectionComplete(int x, int y, int w, int h)
 
     updateScreenshotLabel();
     resize(originalPixmap.size());
+    setMinimumSize(originalPixmap.size() / 8);
+}
+
+void Screenshot::onSelectionCalceled()
+{
+    show();
+
+    updateScreenshotLabel();
+    resize(originalPixmap.size());
+    setMinimumSize(originalPixmap.size() / 8);
 }
 
 

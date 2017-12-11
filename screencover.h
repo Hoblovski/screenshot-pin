@@ -20,6 +20,7 @@ public slots:
 
 signals:
     void selectionComplete(int x, int y, int w, int h);
+    void selectionCanceled();
 
 protected:
     virtual void mousePressEvent(QMouseEvent* event);
