@@ -71,7 +71,7 @@ Screenshot::Screenshot() :
     mainLayout->addWidget(screenshotLabel);
 
     setWindowTitle(tr("Screenshot"));
-    setMinimumSize(200, 300);
+    setMinimumSize(100, 100);
     SetForegroundWindow((HWND)winId());
     setWindowFlags(Qt::WindowStaysOnTopHint);
 }
@@ -95,6 +95,7 @@ void Screenshot::openCover()
 
 void Screenshot::onSelectionComplete(int x, int y, int w, int h)
 {
+    setMinimumSize(10, 10);
     QScreen *screen = QGuiApplication::primaryScreen();
     if (const QWindow *window = windowHandle())
         screen = window->screen();
@@ -106,12 +107,12 @@ void Screenshot::onSelectionComplete(int x, int y, int w, int h)
     show();
 
     updateScreenshotLabel();
+    resize(originalPixmap.size());
 }
 
 
 void Screenshot::updateScreenshotLabel()
 {
-    resize(originalPixmap.size());
     screenshotLabel->setPixmap(originalPixmap.scaled(screenshotLabel->size(),
                                                      Qt::KeepAspectRatio,
                                                      Qt::SmoothTransformation));
