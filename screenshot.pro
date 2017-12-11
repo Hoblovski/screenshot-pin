@@ -1,12 +1,10 @@
 QT += widgets
 
 HEADERS             = screenshot.h \
-    screencover.h \
-    clickablelabel.h
+    screencover.h
 SOURCES             = main.cpp \
                       screenshot.cpp \
-    screencover.cpp \
-    clickablelabel.cpp
+    screencover.cpp
 
 # install
 target.path = $$[QT_INSTALL_EXAMPLES]/widgets/desktop/screenshot

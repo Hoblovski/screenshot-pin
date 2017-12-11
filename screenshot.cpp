@@ -58,7 +58,7 @@
 
 Screenshot::Screenshot() :
     originalPixmap(1, 1),
-    screenshotLabel(new ClickableLabel(this))
+    screenshotLabel(new QLabel(this))
 {
     screenshotLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     screenshotLabel->setAlignment(Qt::AlignCenter);
@@ -66,8 +66,6 @@ Screenshot::Screenshot() :
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
     const QRect screenGeometry = QApplication::desktop()->screenGeometry(this);
-    connect(screenshotLabel, &ClickableLabel::rightClicked, this, &QWidget::close);
-    connect(screenshotLabel, &ClickableLabel::clicked, this, &Screenshot::openCover);
     mainLayout->addWidget(screenshotLabel);
 
     setWindowTitle(tr("Screenshot"));
@@ -85,7 +83,21 @@ void Screenshot::resizeEvent(QResizeEvent * /* event */)
         updateScreenshotLabel();
 }
 
-void Screenshot::openCover()
+void Screenshot::mousePressEvent(QMouseEvent *event)
+{
+    switch (event->button()) {
+        case Qt::LeftButton:
+            newScreenShot();
+            break;
+        case Qt::RightButton:
+            close();
+            break;
+        default:
+            break;
+    }
+}
+
+void Screenshot::newScreenShot()
 {
     ScreenCover* scov = new ScreenCover();
     scov->showFullScreen();

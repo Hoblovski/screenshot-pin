@@ -51,8 +51,7 @@
 #ifndef SCREENSHOT_H
 #define SCREENSHOT_H
 
-#include "clickablelabel.h"
-
+#include <QLabel>
 #include <QPixmap>
 #include <QWidget>
 
@@ -75,16 +74,17 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
-    void openCover();
+    void newScreenShot();
     void onSelectionComplete(int x, int y, int w, int h);
 
 private:
     void updateScreenshotLabel();
 
     QPixmap originalPixmap;
-    ClickableLabel *screenshotLabel;
+    QLabel *screenshotLabel;
 };
 
 #endif // SCREENSHOT_H
