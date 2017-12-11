@@ -13,3 +13,10 @@ Should work under linux, but minor changes will be necessary.
 # Usage
 - Left-click the image region: start new screen shot.
 - Right-click the image region: close application.
+When taking a screen shot
+- Left-click and drag: select region
+- Right-click: quit
+
+# Todo
+- Memory issues (probably there is memory leak using QPixMap)
+- Smaller executable size
