@@ -51,6 +51,8 @@
 #ifndef SCREENSHOT_H
 #define SCREENSHOT_H
 
+#include "screencover.h"
+
 #include <QLabel>
 #include <QPixmap>
 #include <QWidget>
@@ -91,6 +93,7 @@ private:
     QPoint m_mousePressPos;
     bool mouseMoveSinceClick;
     bool mouseClicked;
+    ScreenCover* scov;
 };
 
 #endif // SCREENSHOT_H

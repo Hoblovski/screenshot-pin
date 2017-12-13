@@ -39,7 +39,6 @@ void ScreenCover::mousePressEvent(QMouseEvent *event)
             m_rubberBand->show();
             break;}
         case Qt::RightButton:{
-            close();
             emit selectionCanceled();
             break;}
         default:
@@ -57,7 +56,6 @@ void ScreenCover::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton) return;
     m_rubberBand->hide();
     QRect geom = m_rubberBand->geometry();
-    close();
     emit selectionComplete(geom.x(), geom.y(), geom.width(), geom.height());
 }
 

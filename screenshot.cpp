@@ -59,7 +59,8 @@
 Screenshot::Screenshot() :
     originalPixmap(1, 1),
     screenshotLabel(new QLabel(this)),
-    mouseClicked(false)
+    mouseClicked(false),
+    scov(new ScreenCover(0))
 {
     screenshotLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     screenshotLabel->setAlignment(Qt::AlignCenter);
@@ -129,7 +130,6 @@ void Screenshot::mouseMoveEvent(QMouseEvent *event)
 
 void Screenshot::newScreenShot()
 {
-    ScreenCover* scov = new ScreenCover();
     scov->showFullScreen();
     connect(scov, &ScreenCover::selectionComplete, this, &Screenshot::onSelectionComplete);
     connect(scov, &ScreenCover::selectionCanceled, this, &Screenshot::onSelectionCalceled);
@@ -138,6 +138,8 @@ void Screenshot::newScreenShot()
 
 void Screenshot::onSelectionComplete(int x, int y, int w, int h)
 {
+    scov->close();
+
     QScreen *screen = QGuiApplication::primaryScreen();
     if (const QWindow *window = windowHandle())
         screen = window->screen();
@@ -155,6 +157,8 @@ void Screenshot::onSelectionComplete(int x, int y, int w, int h)
 
 void Screenshot::onSelectionCalceled()
 {
+    scov->close();
+
     show();
 
     updateScreenshotLabel();

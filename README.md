@@ -18,5 +18,5 @@ When taking a screen shot
 - Right-click: quit
 
 # Todo
-- Memory issues (probably there is memory leak using QPixMap)
 - Smaller executable size
+- Smaller memory footprint
