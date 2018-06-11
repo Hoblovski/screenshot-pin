@@ -1,3 +1,7 @@
+This project is mainly developed for Windows since x alreay has this feature.
+
+Now that I've switched to Linux, this project will no longer be maintaied.
+
 # screenshot-pin
 Select a region on the screen and pin it on top of all other windows.<br/>
 Written in Qt with a minimalistic interface (and also minimal code).<br/>
